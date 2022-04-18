@@ -38,7 +38,23 @@ const App = () => {
   const getTotalItems = (items: CartItemType[]) => 
     items.reduce((accum: number, item) => accum + item.amount, 0);   //iterates over CartItemType and returns sum of items in cart, while defaulting to 0
 
-  const handleAddToCart = (clickedItem: CartItemType) => null;
+  const handleAddToCart = (clickedItem: CartItemType) => {
+    setCartItems(prev => {
+      //check if item is already in the cart
+      const isItemInCart = prev.find(item => item.id === clickedItem.id);
+
+      //if item is already in cart, increase amount of item displayed in cart by +1
+      if (isItemInCart) {
+        return prev.map(item => 
+          item.id === clickedItem.id ? {...item, amount: item.amount + 1} : item
+        );
+      }
+    
+      // first time the item is added
+      return [...prev, {...clickedItem, amount: 1}];
+
+  });
+};
 
   const handleRemoveFromCart = () => null;
 
